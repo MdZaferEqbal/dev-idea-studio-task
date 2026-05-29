@@ -99,8 +99,8 @@ export function HorizontalAutoSlideTrack({
 export function FleetAutoSlideTrack({ children }: { children: ReactNode }) {
   return (
     <HorizontalAutoSlideTrack
-      sliderClassName="fleet-vertical-auto-slider"
-      trackClassName="fleet-vertical-auto-slider__track fleet-auto-slide-track"
+      sliderClassName="fleet-vertical-auto-slider w-full"
+      trackClassName="fleet-vertical-auto-slider__track fleet-auto-slide-track w-full!"
     >
       {children}
     </HorizontalAutoSlideTrack>
@@ -111,7 +111,7 @@ export function CityAutoSlideTrack({ children }: { children: ReactNode }) {
   return (
     <HorizontalAutoSlideTrack
       scrollSpeed={42}
-      sliderClassName="city-vertical-auto-slider"
+      sliderClassName="city-vertical-auto-slider py-[90px]!"
       trackClassName="city-auto-slide-track"
     >
       {children}

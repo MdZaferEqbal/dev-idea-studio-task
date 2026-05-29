@@ -33,7 +33,7 @@ function VehicleCard({ vehicle }: { vehicle: (typeof vehicles)[number] }) {
       <div className="relative h-[132px] w-full shrink-0 bg-transparent">
         <Image
           alt={vehicle.imageAlt}
-          className="motion-card-media object-cover lg:object-contain object-center"
+          className="motion-card-media object-contain object-center"
           fill
           sizes="400px"
           src={vehicle.imageSrc}
@@ -127,7 +127,7 @@ export function FleetSection() {
 
         <div className="full-bleed-strip fleet-cards-strip mt-12 bg-transparent px-0">
           <div
-            className="auto-slide-showcase fleet-slide-showcase w-full bg-transparent"
+            className="auto-slide-showcase fleet-slide-showcase w-full px-0!"
             style={sliderStyle}
           >
             <FleetAutoSlideTrack>

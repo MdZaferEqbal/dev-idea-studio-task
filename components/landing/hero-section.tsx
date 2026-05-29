@@ -13,7 +13,7 @@ import { Eyebrow, OutlineButton, PrimaryButton, SectionContainer, cn } from "./s
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden pt-4 sm:pt-5 md:pt-6" id="home">
+    <section className="relative pt-4 sm:pt-5 md:pt-6" id="home">
       <SectionContainer className="relative max-w-[1268px]">
         <Reveal className="relative z-40 md:hidden" delayMs={0}>
           <MobileHeaderNav items={navItems} />
@@ -31,7 +31,7 @@ export function HeroSection() {
                   className={cn(
                     "relative whitespace-nowrap pb-[6px] transition-colors duration-300 hover:text-[var(--primary)]",
                     item.active &&
-                      "text-[var(--primary)] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:rounded-full after:bg-[var(--primary)]",
+                    "text-[var(--primary)] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:rounded-full after:bg-[var(--primary)]",
                   )}
                   href={item.href}
                 >

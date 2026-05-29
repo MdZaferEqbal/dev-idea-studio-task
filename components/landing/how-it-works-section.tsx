@@ -168,7 +168,7 @@ export function HowItWorksSection() {
                 <Flag className="h-6 w-6" strokeWidth={2.2} />
               </div>
 
-              <div className="relative z-10 grid grid-cols-6 gap-4 how-it-works-steps-grid xl:gap-5">
+              <div className="relative z-10 grid grid-cols-6 gap-4 how-it-works-steps-grid xl:gap-5 pb-[90px]!">
                 {steps.map((item, index) => {
                   const Icon = item.icon;
 
