@@ -3,7 +3,8 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
 const MOBILE_MQ = "(max-width: 1279px)";
-const AUTO_SCROLL_INTERVAL = 4000;
+// Speed in pixels per frame (at ~60 fps this is ~1px/frame = ~60px/s)
+const SCROLL_SPEED = 0.3;
 
 export function HowItWorksStepsScroller({ children }: { children: ReactNode }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -15,84 +16,102 @@ export function HowItWorksStepsScroller({ children }: { children: ReactNode }) {
     const mobileQuery = window.matchMedia(MOBILE_MQ);
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    let intervalId: ReturnType<typeof setInterval> | undefined;
-    let activeIndex = 0;
+    let rafId: number | undefined;
     let paused = false;
+    let isVisible = false;
+    let scrollPos = scroller.scrollLeft;
 
-    const getCards = () =>
-      Array.from(scroller.querySelectorAll<HTMLElement>("[data-how-it-works-step]"));
+    // End-of-scroll behavior states
+    let isWaitingAtEnd = false;
+    let pauseEndTime = 0;
+    let isResetting = false;
+    let resetStartTime = 0;
+    let resetStartPos = 0;
 
-    const scrollToIndex = (index: number, behavior: ScrollBehavior = "smooth") => {
-      const cards = getCards();
-      if (!cards.length) return;
+    const tick = () => {
+      if (!paused && isVisible && mobileQuery.matches && !reducedMotionQuery.matches) {
+        const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+        const now = Date.now();
 
-      const nextIndex = ((index % cards.length) + cards.length) % cards.length;
-      activeIndex = nextIndex;
+        if (maxScroll > 0) {
+          if (isWaitingAtEnd) {
+            if (now >= pauseEndTime) {
+              isWaitingAtEnd = false;
+              isResetting = true;
+              resetStartTime = now;
+              resetStartPos = scroller.scrollLeft;
+            }
+          } else if (isResetting) {
+            const elapsed = now - resetStartTime;
+            const duration = 1200; // Time in ms to scroll smoothly back to start
+            const progress = Math.min(1, elapsed / duration);
+            
+            // Cubic ease-in-out easing
+            const ease = progress < 0.5 
+              ? 4 * progress * progress * progress 
+              : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-      if (nextIndex === 0) {
-        scroller.scrollTo({ left: 0, behavior });
-        return;
+            scrollPos = resetStartPos * (1 - ease);
+            scroller.scrollLeft = scrollPos;
+
+            if (progress >= 1) {
+              isResetting = false;
+              scrollPos = 0;
+              scroller.scrollLeft = 0;
+            }
+          } else {
+            // Normal continuous scrolling
+            scrollPos += SCROLL_SPEED;
+            if (scrollPos >= maxScroll) {
+              scrollPos = maxScroll;
+              scroller.scrollLeft = maxScroll;
+              isWaitingAtEnd = true;
+              pauseEndTime = now + 1500; // Pause for 1.5 seconds at the end
+            } else {
+              scroller.scrollLeft = scrollPos;
+            }
+          }
+        }
       }
-
-      if (nextIndex === cards.length - 1) {
-        scroller.scrollTo({
-          left: scroller.scrollWidth - scroller.clientWidth,
-          behavior,
-        });
-        return;
-      }
-
-      const card = cards[nextIndex];
-      const scrollerStyles = getComputedStyle(scroller);
-      const paddingLeft = Number.parseFloat(scrollerStyles.paddingLeft) || 0;
-      const cardLeft =
-        card.getBoundingClientRect().left -
-        scroller.getBoundingClientRect().left +
-        scroller.scrollLeft;
-
-      scroller.scrollTo({
-        left: Math.max(0, cardLeft - paddingLeft),
-        behavior,
-      });
+      rafId = requestAnimationFrame(tick);
     };
 
-    const stop = () => {
-      if (intervalId !== undefined) {
-        clearInterval(intervalId);
-        intervalId = undefined;
-      }
-    };
-
-    const start = () => {
-      stop();
-      if (!mobileQuery.matches || reducedMotionQuery.matches) return;
-
-      intervalId = setInterval(() => {
-        if (paused) return;
-        scrollToIndex(activeIndex + 1);
-      }, AUTO_SCROLL_INTERVAL);
-    };
-
-    const pause = () => {
-      paused = true;
-    };
-
-    const resume = () => {
-      paused = false;
+    const pause = () => { paused = true; };
+    const resume = () => { 
+      // Synchronize accumulator, but cancel reset states to let the user scroll normally
+      scrollPos = scroller.scrollLeft; 
+      isWaitingAtEnd = false;
+      isResetting = false;
+      paused = false; 
     };
 
     const onBreakpointChange = () => {
-      activeIndex = 0;
-
       if (!mobileQuery.matches) {
-        stop();
         scroller.scrollTo({ left: 0, behavior: "auto" });
-        return;
+      } else {
+        scrollPos = scroller.scrollLeft;
       }
-
-      scrollToIndex(0, "auto");
-      start();
     };
+
+    let delayTimeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    // Only auto-scroll when container is visible on screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (delayTimeoutId) clearTimeout(delayTimeoutId);
+
+        if (entry.isIntersecting) {
+          // Minor delay of 800ms before starting the scroll
+          delayTimeoutId = setTimeout(() => {
+            isVisible = true;
+          }, 800);
+        } else {
+          isVisible = false;
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(scroller);
 
     scroller.addEventListener("pointerdown", pause);
     scroller.addEventListener("touchstart", pause, { passive: true });
@@ -102,17 +121,15 @@ export function HowItWorksStepsScroller({ children }: { children: ReactNode }) {
     scroller.addEventListener("mouseleave", resume);
 
     mobileQuery.addEventListener("change", onBreakpointChange);
-    reducedMotionQuery.addEventListener("change", onBreakpointChange);
 
-    const frameId = window.requestAnimationFrame(() => {
-      onBreakpointChange();
-    });
+    // Start the continuous animation loop
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      window.cancelAnimationFrame(frameId);
-      stop();
+      if (rafId !== undefined) cancelAnimationFrame(rafId);
+      if (delayTimeoutId) clearTimeout(delayTimeoutId);
+      observer.disconnect();
       mobileQuery.removeEventListener("change", onBreakpointChange);
-      reducedMotionQuery.removeEventListener("change", onBreakpointChange);
       scroller.removeEventListener("pointerdown", pause);
       scroller.removeEventListener("touchstart", pause);
       scroller.removeEventListener("pointerup", resume);

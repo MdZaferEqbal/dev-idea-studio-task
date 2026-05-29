@@ -419,7 +419,7 @@ a {
 
 @media (max-width: 1279px) {
   .how-it-works-steps-scroll {
-    scroll-snap-type: x mandatory;
+    /* scroll-snap-type: x mandatory; */
     scroll-padding-inline-start: clamp(20px, 5vw, 40px);
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -972,9 +972,9 @@ a {
 
 @media (max-width: 767px) {
   .hero-stage-glow {
-    top: 60%;
-    width: calc(var(--hero-stage-glow-size) * 0.82);
-    height: calc(var(--hero-stage-glow-size) * 0.82);
+    top: 50% !important;
+    width: 312px !important;
+    height: 312px !important;
   }
 
   .footer-watermark {
