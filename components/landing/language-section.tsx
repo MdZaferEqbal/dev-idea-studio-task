@@ -2,10 +2,16 @@ import Image from "next/image";
 import { Globe, PlusCircle } from "lucide-react";
 import { supportedLanguages } from "./landing-data";
 import { Eyebrow, SectionContainer } from "./shared";
+import { AmbientGlow } from "./ambient-glow";
 
 export function LanguageSection() {
   return (
-    <section className="relative overflow-hidden pb-8 md:pb-24" id="about">
+    <section className="relative h-auto pb-8 md:pb-24" id="about">
+      <AmbientGlow
+        className="md:left-[-25%] md:translate-x-1/2 bottom-0 right-[-25%] w-[312px]! h-[312px]! md:w-[570px]! md:h-[570px]!"
+        style={{ width: "570px", height: "570px" }}
+        tone="orange"
+      />
       <SectionContainer>
         <div className="landing-section-body">
           <div className="grid gap-6 md:gap-11 lg:grid-cols-[1.16fr_0.84fr] lg:items-center lg:gap-10 xl:gap-11">

@@ -72,7 +72,7 @@ function CityRail({
   className?: string;
 }) {
   return (
-    <div className={cn("flex w-max gap-2.5", className)}>
+    <div className={cn("flex w-max gap-2.5! ms-2.5 md:ms-0! py-3.5", className)}>
       {cities.map((city) => (
         <CityCard key={`${idPrefix}-${city.title}`} city={city} />
       ))}
@@ -93,7 +93,7 @@ export function CitiesSection() {
         tone="orange"
       />
       <SectionContainer>
-        <div className="landing-section-body">
+        <div className="landing-section-body h-full">
           <div className="flex justify-center">
             <Eyebrow
               className="px-4 py-2 text-[10px]"

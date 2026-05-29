@@ -16,15 +16,15 @@ const preferenceItems: Array<{
   icon: LucideIcon;
   tone: "peach" | "blue";
 }> = [
-  { title: "Experienced Drivers", icon: ShieldCheck, tone: "peach" },
-  { title: "Event & Wedding", icon: PartyPopper, tone: "blue" },
-  { title: "Pet-Friendly Drivers", icon: PawPrint, tone: "peach" },
-  { title: "Flexible Hours", icon: Clock3, tone: "peach" },
-  { title: "Wheelchair Access", icon: Accessibility, tone: "peach" },
-  { title: "Highly Active", icon: TramFront, tone: "peach" },
-  { title: "Personal Car Use", icon: CarFront, tone: "peach" },
-  { title: "Young & Energetic", icon: Zap, tone: "blue" },
-];
+    { title: "Experienced Drivers", icon: ShieldCheck, tone: "peach" },
+    { title: "Event & Wedding", icon: PartyPopper, tone: "blue" },
+    { title: "Pet-Friendly Drivers", icon: PawPrint, tone: "peach" },
+    { title: "Flexible Hours", icon: Clock3, tone: "peach" },
+    { title: "Wheelchair Access", icon: Accessibility, tone: "peach" },
+    { title: "Highly Active", icon: TramFront, tone: "peach" },
+    { title: "Personal Car Use", icon: CarFront, tone: "peach" },
+    { title: "Young & Energetic", icon: Zap, tone: "blue" },
+  ];
 
 const toneStyles = {
   peach: {
