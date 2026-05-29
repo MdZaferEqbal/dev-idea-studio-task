@@ -14,6 +14,7 @@ import { MobileBottomCta } from "./mobile-bottom-cta";
 import { Reveal } from "./motion";
 import { TestimonialsSection } from "./testimonials-section";
 import { TravelSolutionsSection } from "./travel-solutions-section";
+import { HowItWorksSectionOld } from "./how-it-works-section-OLD";
 
 export function LandingPage() {
   return (
@@ -42,6 +43,9 @@ export function LandingPage() {
       <Reveal delayMs={40}>
         <HowItWorksSection />
       </Reveal>
+      {/* <Reveal delayMs={40}>
+        <HowItWorksSectionOld />
+      </Reveal> */}
       <Reveal delayMs={40}>
         <CitiesSection />
       </Reveal>

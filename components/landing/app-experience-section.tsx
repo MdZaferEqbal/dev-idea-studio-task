@@ -16,33 +16,33 @@ const featureCards: Array<{
   description: string;
   icon: ReactNode;
 }> = [
-  {
-    title: "Free Cancellation",
-    description: "Plans changed? Cancel easily in just one tap.",
-    icon: (
-      <span className="relative block h-[28px] w-[28px]">
-        <CarFront className="h-full w-full" strokeWidth={2.2} />
-        <span className="absolute right-[-2px] top-[-2px] h-[10px] w-[10px] rounded-full bg-[var(--primary)] transition-colors duration-300 group-hover:bg-white" />
-      </span>
-    ),
-  },
-  {
-    title: "Best Price Guaranteed",
-    description: "Enjoy transparent pricing and save more on every ride with AAVORide.",
-    icon: <IndianRupee className="h-[28px] w-[28px]" strokeWidth={2.1} />,
-  },
-  {
-    title: "Direct Driver Contact",
-    description: "Connect directly with verified drivers for a faster and smoother booking experience.",
-    icon: <UserRoundCheck className="h-[28px] w-[28px]" strokeWidth={2.1} />,
-  },
-  {
-    title: "24/7 Ride Availability",
-    description:
-      "Book rides anytime for airport transfers, local trips, or outstation travel across India.",
-    icon: <BadgeCheck className="h-[28px] w-[28px]" strokeWidth={2.1} />,
-  },
-];
+    {
+      title: "Free Cancellation",
+      description: "Plans changed? Cancel easily in just one tap.",
+      icon: (
+        <span className="relative block h-[28px] w-[28px]">
+          <CarFront className="h-full w-full" strokeWidth={2.2} />
+          <span className="absolute right-[-2px] top-[-2px] h-[10px] w-[10px] rounded-full bg-[var(--primary)] transition-colors duration-300 group-hover:bg-white" />
+        </span>
+      ),
+    },
+    {
+      title: "Best Price Guaranteed",
+      description: "Enjoy transparent pricing and save more on every ride with AAVORide.",
+      icon: <IndianRupee className="h-[28px] w-[28px]" strokeWidth={2.1} />,
+    },
+    {
+      title: "Direct Driver Contact",
+      description: "Connect directly with verified drivers for a faster and smoother booking experience.",
+      icon: <UserRoundCheck className="h-[28px] w-[28px]" strokeWidth={2.1} />,
+    },
+    {
+      title: "24/7 Ride Availability",
+      description:
+        "Book rides anytime for airport transfers, local trips, or outstation travel across India.",
+      icon: <BadgeCheck className="h-[28px] w-[28px]" strokeWidth={2.1} />,
+    },
+  ];
 
 export function AppExperienceSection() {
   return (
